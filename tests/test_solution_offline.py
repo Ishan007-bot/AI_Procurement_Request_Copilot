@@ -341,6 +341,18 @@ class StagedArchitectureTests(OfflineTestBase):
         self.assertTrue(run.decision.recommendation.startswith(SPECIALIST))
 
 
+class WorkflowArchitectureTests(OfflineTestBase):
+    def test_code_gathers_evidence_and_one_call_decides(self):
+        llm = ScriptedLLM(script=[submit(recommendation=BUDGET_EXCEPTION, required_approvals=["Finance"])])
+        run = run_copilot(get_request("REQ-1005"), "workflow", client_factory=lambda t: (setattr(llm, "telemetry", t), llm)[1])
+        self.assertIsNone(run.fallback_reason)
+        self.assertEqual(run.decision.telemetry.llm_calls, 1)
+        self.assertEqual(run.decision.telemetry.tool_calls, 6)
+        self.assertTrue(run.decision.recommendation.startswith(BUDGET_EXCEPTION))
+        self.assertIn("Legal", run.decision.required_approvals)  # floor restored
+        self.assertEqual([t["function"]["name"] for t in llm.calls[0]["tools"]], ["submit_decision"])
+
+
 class ClientHelperTests(unittest.TestCase):
     def fake_exc(self, body=None, text=""):
         exc = Exception(text)

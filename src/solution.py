@@ -17,6 +17,7 @@ from typing import Callable
 from src.agents.loop import AgentLoopError
 from src.agents.single_agent import run_single_agent
 from src.agents.staged import run_staged
+from src.agents.workflow import run_workflow
 from src.contracts import Architecture, DraftDecision, ProcurementDecision
 from src.data_access import get_request
 from src.guardrails import apply_guardrails, fallback_decision
@@ -70,6 +71,13 @@ def run_copilot(request: dict, architecture: Architecture = "single",
                              "llm_calls": result.reviewer_llm_calls, "recovered_from_text": result.reviewer.recovered_from_text},
                 "evidence_pack": result.pack.model_dump(),
             }
+        elif architecture == "workflow":
+            result = run_workflow(request, runner, client)
+            draft = result.output
+            stages = {"reviewer": {"iterations": result.reviewer.iterations, "repairs": result.reviewer.repairs,
+                                   "llm_calls": telemetry.llm_calls,
+                                   "recovered_from_text": result.reviewer.recovered_from_text},
+                      "evidence_pack": result.pack.model_dump()}
         else:
             raise ValueError(f"Unknown architecture '{architecture}'")
     except (LLMUnavailable, LLMError, AgentLoopError) as exc:

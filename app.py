@@ -26,7 +26,8 @@ from src.solution import CopilotRun, run_copilot
 st.set_page_config(page_title="Procurement Copilot", page_icon="🧾", layout="wide")
 st.markdown(ui.CSS, unsafe_allow_html=True)
 
-ARCHITECTURES = {"Single agent (A)": "single", "Staged / 2-agent (B)": "staged", "Compare A vs B": "compare"}
+ARCHITECTURES = {"Single agent (A)": "single", "Staged / 2-agent (B)": "staged",
+                 "Workflow + 1 LLM call": "workflow", "Compare A vs B": "compare"}
 DEAD_VENDOR_API = "http://127.0.0.1:9"
 
 
@@ -213,7 +214,7 @@ def execute(arch: str, status) -> CopilotRun:
 
 def run_and_store(arch: str) -> CopilotRun | None:
     key = (run_key_base, arch, provider, simulate_outage)
-    label = "Architecture A" if arch == "single" else "Architecture B"
+    label = {"single": "Architecture A", "staged": "Architecture B", "workflow": "Workflow + 1 LLM"}[arch]
     with st.status(f"{label}: gathering evidence…", expanded=True) as status:
         started = time.perf_counter()
         try:

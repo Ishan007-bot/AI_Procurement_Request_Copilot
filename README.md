@@ -6,8 +6,9 @@ Two architectures were built on the same tools, policy engine and guardrails, an
 
 - **A: single agent.** One tool-calling agent gathers evidence and decides.
 - **B: staged.** An Analyst agent gathers evidence into a typed evidence pack; a Reviewer agent (no tools) decides.
+- **Workflow + 1 LLM call** (added after run 1 showed the agents always call the same tools). Code gathers the same evidence pack in a fixed order, and one Reviewer call decides.
 
-**Ship decision: A, the single agent.** It matches B on quality and is cheaper, faster and simpler (see [Architecture decision](#architecture-decision)).
+**Ship decision: workflow + 1 LLM call.** Code gathers the evidence and one model call judges. It matched or beat A and B on the same model and test set at half A's cost and a third of B's. Between the two agent architectures, A beats B (same quality, cheaper). See [Architecture decision](#architecture-decision).
 
 ---
 
@@ -36,6 +37,8 @@ Open http://127.0.0.1:8501. Deep link for a demo: `http://127.0.0.1:8501/?reques
 | `python evals/run_public_evals.py --architecture single\|staged` | Starter harness: 6 public cases, minimum checks |
 | `python evals/run_comparison.py [--suite core\|full]` | A vs B comparison on the same cases and model; resumable, quota-aware |
 | `python evals/run_comparison.py --report-only` | Rebuild reports from saved runs |
+| `python evals/run_comparison.py --provider gemini --models gemini-3.5-flash-lite --architectures single,staged,workflow --repeats 3` | Final single-model comparison (3 architectures × 3 trials) |
+| `python evals/report_trials.py` | Report for that run: `evals/results/summary_trials.md` |
 | `python evals/build_fixtures.py` | Rebuild the edge-case overlay dataset |
 
 Configuration is in `.env` (see `.env.example`): `LLM_PROVIDER` (`groq` / `gemini`), `MODEL_NAME`, `LLM_REASONING_EFFORT`, throttle and retry settings, `VENDOR_RISK_BASE_URL`, `PROCUREMENT_DATA_DIR`. Keys can also come from OS environment variables.
@@ -78,7 +81,7 @@ src/
   llm.py             Gemini/Groq client: throttle, retries, quota fail-fast, provider quirks
   prompts.py         system prompts + structured-output schemas
   agents/loop.py     shared tool-calling loop (repairs, text recovery, iteration cap)
-  agents/single_agent.py, agents/staged.py   architectures A and B
+  agents/single_agent.py, agents/staged.py, agents/workflow.py   A, B and workflow + 1 LLM
   guardrails.py      floor merge, grounding, recommendation floor, rules-only fallback
   solution.py        handle_request(...) adapter + run_copilot(...)
   vendor_client.py   typed vendor-risk client (ok / not_found / unavailable / error)
@@ -98,6 +101,23 @@ All interpretations of the policy and data are in **[docs/assumptions.md](docs/a
 Starter-pack defects found and fixed (11, each with a test): **[docs/starter_fixes.md](docs/starter_fixes.md)**.
 
 ## Evaluation
+
+### Final run: one model, all architectures
+
+`gemini-3.5-flash-lite` for every architecture, 16 core cases, temperature 0. Full table: **[evals/results/summary_trials.md](evals/results/summary_trials.md)**.
+
+| Metric | Rules only | Workflow + 1 LLM | A · single agent | B · staged |
+|---|---:|---:|---:|---:|
+| Cases passing all four quality checks | 15/16 | **15/16** | 14/16 | 14/16 |
+| Injection + fault cases all pass | yes | yes | yes | yes |
+| Evidence grounded in tool output | all | all | all | all |
+| LLM calls per request | 0 | **1.0** | 2.0 | 3.1 |
+| Tokens per request | 0 | **2.6k** | 5.8k | 8.3k |
+| Median active latency | < 0.1 s | **2.8 s** | 5.1 s | 6.2 s |
+
+The figures are for trial 1. Trials 2–3 are appended to `runs.jsonl` as they complete, and `python evals/report_trials.py` regenerates the table.
+
+### Run 1: two Groq models, paired by case
 
 Method, cases and scoring: **[docs/evaluation.md](docs/evaluation.md)**. Full results: **[evals/results/summary.md](evals/results/summary.md)**; per-run data in `evals/results/runs.jsonl`; template CSVs in `evals/results/results_{single,staged}.csv`.
 
@@ -122,12 +142,12 @@ Method, cases and scoring: **[docs/evaluation.md](docs/evaluation.md)**. Full re
 - **The guardrails did their job.** When drafts said "Proceed" for customer PII or for a $10k new vendor, the floor raised them to "Specialist review". The final decisions never missed a policy-required approval.
 - **It also exposed a guardrail flaw.** Model follow-up questions forced "Request clarification" over correct "Manual review" drafts. It was fixed and verified by replaying the saved drafts with no new model calls (10 → 13 for A, 8 → 13 for B).
 - **The LLM's added value is judging existing-tool overlap** (DS-1008, which the rules alone get wrong). That judgement is also the main remaining error source (PUB-02, PUB-03, EDGE-11).
-- **Starter harness:** `run_public_evals.py` passed 6/6 live for A (`gpt-oss-120b`). The harness's own checks pass 6/6 for both A and B on the saved model decisions with the final guardrails. A live B confirmation on `qwen3.8-27b` is logged in `evals/results/public_staged.log`.
+- **Starter harness:** `run_public_evals.py` passed 6/6 live for A (`gpt-oss-120b`). The harness's own checks pass 6/6 for both A and B on the saved model decisions with the final guardrails. B also passed 6/6 live on `qwen3.8-27b` with the final code, every case decided by the model (`evals/results/public_staged.log`).
 - **Gold revision (documented):** PUB-01 also accepts "Use existing tool / confirm need", per policy §3 (unused capacity).
 
 ## Architecture decision
 
-**Ship A, the single agent.** Quality is a tie (13/16 each with the current guardrails). B costs +22% input tokens, 2× output tokens, +56% median latency and one more LLM call per run, and adds a second prompt and hand-off schema to maintain. The properties that matter most (no missed approvals, grounded evidence, conservative handling of unavailable or conflicting data, injection resistance) come from deterministic code that both share, not from the orchestration. Memo (≤ 500 words): **[ARCHITECTURE_DECISION.md](ARCHITECTURE_DECISION.md)**.
+**Ship workflow + 1 LLM call.** In every run the agents called the same evidence tools, so code now does the gathering, and one model call makes the judgement (existing-tool overlap, rationale, next step). On one model it scored 15/16 (A and B 14/16), passed every safety case, and used 1 LLM call vs 2.0 (A) and 3.1 (B). **Between A and B, A wins:** quality is a tie (13/16 each in run 1, 14/16 each in the final run). B costs +22% input tokens, 2× output tokens, +56% median latency and one more LLM call per run, and adds a second prompt and hand-off schema to maintain. The properties that matter most (no missed approvals, grounded evidence, conservative handling of unavailable or conflicting data, injection resistance) come from deterministic code that both share, not from the orchestration. Memo (≤ 500 words): **[ARCHITECTURE_DECISION.md](ARCHITECTURE_DECISION.md)**.
 
 ## Known limitations
 

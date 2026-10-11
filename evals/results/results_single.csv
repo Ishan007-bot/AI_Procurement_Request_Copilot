@@ -1,17 +1,2 @@
 case_id,architecture,correct_next_action,grounded_evidence,policy_followed,human_escalation_correct,latency_ms,llm_calls,tool_calls,notes
-PUB-01,single,True,True,True,True,14728.0,6,6,
-PUB-02,single,False,True,True,True,9385.7,3,7,label Use existing tool / confirm need not in ['Route for specialist review']
-PUB-03,single,False,True,True,True,6672.5,6,6,label Use existing tool / confirm need not in ['Route for specialist review']
-PUB-04,single,True,True,True,True,5283.6,2,6,
-PUB-05,single,True,True,True,True,4829.4,6,6,
-PUB-06,single,False,True,True,True,8924.6,2,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
-DS-1004,single,True,True,True,True,4085.4,6,6,
-DS-1007,single,False,True,True,True,8683.3,2,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
-DS-1008,single,True,True,True,True,4642.1,6,6,
-DS-1010,single,True,True,True,True,37420.0,2,6,
-EDGE-01,single,True,True,True,True,4244.0,6,6,
-EDGE-05,single,True,True,True,True,6712.8,2,6,
-EDGE-06,single,True,True,True,True,4751.0,6,6,
-EDGE-08,single,True,True,True,True,8275.8,2,6,
-EDGE-11,single,False,True,True,False,5197.4,6,6,label Route for specialist review not in ['Use existing tool / confirm need']; less restrictive than gold (Route for specialist review)
-EDGE-13,single,False,True,True,True,7741.6,2,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+PUB-01,single,True,True,True,True,8734.3,2,6,

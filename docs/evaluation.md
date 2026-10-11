@@ -55,3 +55,12 @@ Agent failures that are *not* quota-related (no valid output, provider errors) a
 - **Follow-up questions on complete requests** (starter harness PUB-01 for B: "3 missing-information items, expected 0"). They now go to the next step as open questions.
 - **Measuring guardrail fixes without new model calls:** each saved run keeps the agent's draft, and the policy floor is deterministic, so `run_comparison.py` replays the current guardrail code on every saved draft and reports it alongside the as-run scores. As run: A 10/16, B 8/16. With the fixed guardrails replayed: A 13/16, B 13/16. All six remaining failures are model-judgement errors on existing-tool overlap (PUB-02, PUB-03, EDGE-11) or over-caution (DS-1010, B).
 - **Latency outliers:** one B run (PUB-05) hit a network connection stall (667 s "active"), and the machine slept or hibernated during a later public-harness run. Medians are reported next to means.
+
+## Run 2 (final): one model, three trials, three architectures
+
+The first run had to split cases across two Groq models because of daily token caps. `gemini-3.5-flash-lite` (Gemini free tier) has enough quota to run **everything on one model**, so the final comparison is:
+
+- **Same model for every architecture**, 16 core cases × **3 trials**, temperature 0.
+- **A third variant, "workflow + 1 LLM call"** (`src/agents/workflow.py`). In run 1 the agents always called the same evidence tools, so this variant tests whether letting a model choose tools adds anything. Code calls the six evidence tools in a fixed order and builds the same evidence pack as B. **One** Reviewer call (the same prompt as B) makes the judgement. The guardrails are the same.
+- Extra metrics: mean passes per trial, **decision consistency across trials**, and a **safety gate** (the injection and fault cases PUB-05, PUB-06, EDGE-05, EDGE-06 and EDGE-13 must pass in every trial).
+- Report: `python evals/report_trials.py` → `evals/results/summary_trials.md`. Run 1's report stays in `evals/results/summary.md`.

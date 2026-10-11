@@ -1,37 +1,34 @@
 # Architecture Decision Memo
 
 ## Decision
-Ship **Architecture A: the single agent**, on top of the deterministic policy engine and guardrails.
+Between A (single agent) and B (Analyst → Reviewer), **A is the better agent architecture**: same quality, lower cost. But we ship the simpler rung below both: **workflow + 1 LLM call**. Code gathers the evidence in a fixed order, and one model call makes the judgement. The deterministic policy engine and guardrails sit underneath all three.
 
 ## Evidence
-Same 16 core cases (6 public, 4 dataset, 6 edge cases) for both. Each case's A and B ran on the same model: `gpt-oss-20b` for 8 cases, `qwen3.8-27b` for 8 (Groq free tier). Details: `evals/results/summary.md`.
+Final run: one model for every architecture (`gemini-3.5-flash-lite`), the same 16 core cases (6 public, 4 dataset, 6 edge cases), temperature 0. Details: `evals/results/summary_trials.md`.
 
-| Metric | Single agent | Staged / 2-agent |
-|---|---:|---:|
-| All four quality checks pass (as run) | 10/16 | 8/16 |
-| Same, current guardrails replayed on saved drafts | **13/16** | **13/16** |
-| Raw draft chose the right label | 10/16 | 11/16 |
-| Evidence grounded / policy followed | 16/16 · 16/16 | 16/16 · 15/16 |
-| Median active latency | 6.7 s | 10.4 s |
-| Avg LLM calls | 4.1 | 5.0 |
-| Avg input / output tokens | 7.4k / 1.1k | 9.0k / 2.3k |
-| Guardrail corrections per run | 0.7 | 1.2 |
+| Metric | Workflow + 1 LLM | Single agent | Staged / 2-agent |
+|---|---:|---:|---:|
+| Cases passing all four quality checks | **15/16** | 14/16 | 14/16 |
+| Injection and fault cases all pass | yes | yes | yes |
+| Evidence grounded | all | all | all |
+| LLM calls per request | **1.0** | 2.0 | 3.1 |
+| Tokens per request | **2.6k** | 5.8k | 8.3k |
+| Median active latency | **2.8 s** | 5.1 s | 6.2 s |
 
-The rules-only baseline (no LLM) scores 15/16.
+The rules-only baseline also scores 15/16. An earlier run (two Groq models, paired by case) gave A and B 13/16 each. The ranking holds: the extra orchestration buys no accuracy.
+
+## Why not more agents
+In every run, A called the same evidence tools in the same order. A fixed path is a workflow, so a model choosing it adds cost, not judgement. B's split is legitimate, and its Reviewer sometimes caught a weak "existing tool covers it" claim. But it also over-asked: clarification on a $950 training pack, and five times as many dropped follow-up questions. And it costs 3× the workflow's calls.
 
 ## Trade-offs
-- **Quality: a tie.** B's drafts got one more label right, but its Reviewer raised five times as many dropped follow-up questions and was over-cautious on a $950 training pack. Neither caught the wiki overlap on `gpt-oss-20b`.
-- **Cost: B is worse on every axis.** +22% input tokens, 2× output tokens, +56% median latency, one more LLM call, and a second prompt and hand-off schema to maintain.
-- **Safety is shared.** Grounding, mandatory approvals and escalation come from deterministic code both use. Every final decision included every policy-required approval.
+- The workflow can't take an unusual evidence path. It doesn't need to: policy mandates the same checks for every request.
+- The model's real job is judging existing-tool overlap and explaining the outcome. It is also the main error source: no configuration caught that TaskFlow already covers DS-1008. So that judgement stays advisory, and a human confirms it.
+- The guardrails do more work under the workflow (0.8 corrections per run vs 0.3 for A). This is by design: code holds every threshold and trigger.
 
-## Also learned
-- The engine does most of the policy work. The LLM's real contribution is judging existing-tool overlap (DS-1008, which rules can't do), and that judgement is also the main error source (PUB-02, PUB-03, EDGE-11). It should stay advisory.
-- The evaluation found a guardrail flaw. Model follow-up questions forced "Request clarification" over correct "Manual review" drafts, causing most as-run failures in both architectures. It was fixed and verified by replaying the saved drafts, with no new model calls.
+## Risks / validate before production
+- Small sample: 16 cases on free-tier models. Further trials are recorded as they complete. Repeat on the production model with a held-out set.
+- The evaluation found two guardrail flaws (model follow-up questions forcing "clarification"). Both were fixed and verified by replaying the saved drafts.
+- Add seat-utilisation data, live registry and vendor feeds, authentication, and an audited approval workflow.
 
-## Risks and what to validate before production
-- **Small sample:** 16 cases, one run each, two small free-tier models. The daily token cap blocked the intended `gpt-oss-120b` run. Repeat on the production model.
-- **Overlap judgement:** keep "Use existing tool" as a suggestion a human confirms, and add seat-utilisation data.
-- **Integration:** live registry and vendor-risk feeds, authentication, and an audited approval workflow.
-
-## Why A is the right MVP
-A matches B on quality while being cheaper, faster and easier to operate. The properties that matter (no missed approvals, no unverified evidence, conservative handling of missing or conflicting data, injection resistance) live in shared deterministic code, not in the orchestration. B's separation bought no accuracy. It's worth revisiting only if the evidence pack must become an interface for other systems.
+## Why this is the right MVP
+It reaches the best quality measured, passes every safety case, and costs a third of B per request. AI interprets, code applies the policy, humans decide.

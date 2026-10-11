@@ -1,0 +1,97 @@
+Models gemini:gemini-3.5-flash-lite · suite core · 141 run(s) to do
+Estimated input tokens: ~1,551,000 (free tier: ~8k tokens/min, daily cap applies)
+
+PUB-02   single r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5533 active=5.9s wall=6s overrides=0
+PUB-02   staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=3 tok=7249 active=7.7s wall=8s overrides=0
+PUB-02   workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=1 tok=2331 active=2.1s wall=2s overrides=0
+PUB-03   single r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5471 active=5.0s wall=5s overrides=1
+PUB-03   staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=4 tok=10464 active=7.9s wall=8s overrides=1
+PUB-03   workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=1 tok=2247 active=2.9s wall=3s overrides=2
+PUB-04   single r0 gemini:gemini-3.5-flash-lite ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=2 tok=5277 active=6.8s wall=7s overrides=0
+PUB-04   staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=3 tok=6765 active=5.6s wall=6s overrides=0
+PUB-04   workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=1 tok=2168 active=3.0s wall=3s overrides=0
+PUB-05   single r0 gemini:gemini-3.5-flash-lite ... PASS label=Request clarification raw=Request clarification llm=2 tok=5550 active=3.9s wall=4s overrides=1
+PUB-05   staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Request clarification raw=Request clarification llm=3 tok=7149 active=6.9s wall=7s overrides=0
+PUB-05   workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Request clarification raw=Request clarification llm=1 tok=2343 active=2.8s wall=3s overrides=0
+PUB-06   single r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=2 tok=5079 active=5.9s wall=75s overrides=0
+PUB-06   staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=3 tok=6634 active=7.0s wall=7s overrides=0
+PUB-06   workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=1 tok=2030 active=3.4s wall=3s overrides=0
+DS-1004  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5635 active=3.7s wall=4s overrides=0
+DS-1004  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=3 tok=7311 active=6.1s wall=6s overrides=0
+DS-1004  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=1 tok=2421 active=2.6s wall=3s overrides=0
+DS-1007  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=2 tok=5614 active=4.1s wall=4s overrides=0
+DS-1007  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=3 tok=7515 active=6.3s wall=6s overrides=0
+DS-1007  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=1 tok=2477 active=2.7s wall=3s overrides=2
+DS-1008  single r0 gemini:gemini-3.5-flash-lite ... FAIL label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5187 active=3.9s wall=4s overrides=0
+         - label Proceed to approval routing not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Proceed to approval routing)
+DS-1008  staged r0 gemini:gemini-3.5-flash-lite ... FAIL label=Proceed to approval routing raw=Proceed to approval routing llm=4 tok=9914 active=9.8s wall=85s overrides=0
+         - label Proceed to approval routing not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Proceed to approval routing)
+DS-1008  workflow r0 gemini:gemini-3.5-flash-lite ... FAIL label=Proceed to approval routing raw=Proceed to approval routing llm=1 tok=2108 active=3.0s wall=3s overrides=0
+         - label Proceed to approval routing not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Proceed to approval routing)
+DS-1010  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5186 active=5.8s wall=6s overrides=0
+DS-1010  staged r0 gemini:gemini-3.5-flash-lite ... FAIL label=Request clarification raw=Request clarification llm=3 tok=6491 active=5.9s wall=6s overrides=1
+         - label Request clarification not in ['Proceed to approval routing']
+DS-1010  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=1 tok=2038 active=4.7s wall=5s overrides=1
+EDGE-01  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=2 tok=4917 active=3.3s wall=3s overrides=1
+EDGE-01  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=3 tok=6345 active=5.7s wall=6s overrides=1
+EDGE-01  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=1 tok=1963 active=2.1s wall=2s overrides=1
+EDGE-05  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5148 active=5.8s wall=6s overrides=0
+EDGE-05  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=3 tok=6644 active=9.7s wall=79s overrides=0
+EDGE-05  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=1 tok=2071 active=2.0s wall=2s overrides=0
+EDGE-06  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Route for specialist review llm=2 tok=4809 active=3.4s wall=3s overrides=1
+EDGE-06  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=3 tok=6032 active=5.3s wall=5s overrides=0
+EDGE-06  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Route for specialist review llm=1 tok=1761 active=1.9s wall=2s overrides=1
+EDGE-08  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5047 active=3.5s wall=4s overrides=0
+EDGE-08  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=3 tok=6514 active=5.7s wall=6s overrides=1
+EDGE-08  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=1 tok=2086 active=2.0s wall=2s overrides=2
+EDGE-11  single r0 gemini:gemini-3.5-flash-lite ... FAIL label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5174 active=6.6s wall=7s overrides=0
+         - label Proceed to approval routing not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Proceed to approval routing)
+EDGE-11  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=3 tok=6589 active=5.8s wall=6s overrides=1
+EDGE-11  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=1 tok=2068 active=3.9s wall=4s overrides=1
+EDGE-13  single r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Route for specialist review llm=2 tok=4862 active=5.6s wall=80s overrides=1
+EDGE-13  staged r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Route for specialist review llm=3 tok=6141 active=6.4s wall=6s overrides=1
+EDGE-13  workflow r0 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Route for specialist review llm=1 tok=1855 active=2.3s wall=2s overrides=1
+PUB-01   single r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5111 active=5.2s wall=5s overrides=0
+PUB-01   staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=3 tok=6478 active=7.4s wall=7s overrides=0
+PUB-01   workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=1 tok=2014 active=3.9s wall=4s overrides=1
+PUB-02   single r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5514 active=4.0s wall=4s overrides=0
+PUB-02   staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=3 tok=7175 active=5.8s wall=6s overrides=0
+PUB-02   workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=1 tok=2331 active=3.3s wall=3s overrides=0
+PUB-03   single r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=2 tok=5404 active=3.6s wall=4s overrides=1
+PUB-03   staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=3 tok=7086 active=7.3s wall=7s overrides=1
+PUB-03   workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=1 tok=2247 active=4.1s wall=71s overrides=2
+PUB-04   single r1 gemini:gemini-3.5-flash-lite ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=2 tok=5304 active=4.8s wall=5s overrides=0
+PUB-04   staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=3 tok=6775 active=6.9s wall=7s overrides=0
+PUB-04   workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=1 tok=2168 active=3.8s wall=4s overrides=0
+PUB-05   single r1 gemini:gemini-3.5-flash-lite ... PASS label=Request clarification raw=Request clarification llm=2 tok=5550 active=4.0s wall=4s overrides=0
+PUB-05   staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Request clarification raw=Request clarification llm=3 tok=7166 active=5.8s wall=6s overrides=6
+PUB-05   workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Request clarification raw=Request clarification llm=1 tok=2343 active=2.7s wall=3s overrides=1
+PUB-06   single r1 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=2 tok=5079 active=4.7s wall=5s overrides=0
+PUB-06   staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=4 tok=9645 active=10.0s wall=10s overrides=0
+PUB-06   workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=1 tok=2030 active=2.8s wall=3s overrides=0
+DS-1004  single r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5616 active=6.3s wall=75s overrides=2
+DS-1004  staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=3 tok=7295 active=6.6s wall=7s overrides=1
+DS-1004  workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=1 tok=2421 active=2.7s wall=3s overrides=1
+DS-1007  single r1 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=2 tok=5651 active=4.2s wall=4s overrides=3
+DS-1007  staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=3 tok=7438 active=7.0s wall=7s overrides=2
+DS-1007  workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Manual review: evidence unavailable or conflicting raw=Manual review: evidence unavailable or conflicting llm=1 tok=2477 active=2.9s wall=3s overrides=2
+DS-1008  single r1 gemini:gemini-3.5-flash-lite ... FAIL label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5187 active=5.5s wall=6s overrides=0
+         - label Proceed to approval routing not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Proceed to approval routing)
+DS-1008  staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=3 tok=6813 active=20.1s wall=20s overrides=1
+DS-1008  workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=1 tok=2108 active=6.3s wall=6s overrides=0
+DS-1010  single r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5170 active=11.5s wall=12s overrides=0
+DS-1010  staged r1 gemini:gemini-3.5-flash-lite ... FAIL label=Request clarification raw=Request clarification llm=3 tok=6478 active=21.1s wall=25s overrides=2
+         - label Request clarification not in ['Proceed to approval routing']
+DS-1010  workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=1 tok=2038 active=10.4s wall=10s overrides=0
+EDGE-01  single r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5008 active=16.8s wall=17s overrides=0
+EDGE-01  staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=3 tok=6386 active=18.9s wall=19s overrides=1
+EDGE-01  workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Route for specialist review raw=Proceed to approval routing llm=1 tok=1963 active=7.3s wall=7s overrides=1
+EDGE-05  single r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5148 active=13.7s wall=14s overrides=0
+EDGE-05  staged r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=3 tok=6684 active=12.5s wall=12s overrides=0
+EDGE-05  workflow r1 gemini:gemini-3.5-flash-lite ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=1 tok=2071 active=2.1s wall=2s overrides=0
+EDGE-06  single r1 gemini:gemini-3.5-flash-lite ... 

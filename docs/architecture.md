@@ -76,6 +76,18 @@ The hand-off is a typed `EvidencePack` (`src/contracts.py`). Its deterministic p
 
 Both architectures share the model, tools, policy engine, guardrails, loop and fallback. **Only the orchestration differs**, which is what the evaluation isolates.
 
+## 4b. Variant: workflow + 1 LLM call
+
+```mermaid
+flowchart LR
+    UI[UI / handle_request] --> WF[Code: fixed order<br/>intake, budget, catalog,<br/>registry, vendor risk, policy]
+    WF --> PK[Same evidence pack as B]
+    PK --> RV[Reviewer: one LLM call]
+    RV -->|submit_decision| GR[Guardrails] --> DEC[Decision]
+```
+
+Added after run 1 showed the agents always called the same evidence tools. Code does the gathering, and the model makes only the judgement the rules can't: whether an existing tool covers the need, plus the rationale.
+
 ## 5. Tools
 
 | Tool | Kind | Purpose |

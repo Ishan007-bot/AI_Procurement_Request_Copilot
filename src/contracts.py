@@ -28,7 +28,7 @@ class ProcurementDecision(BaseModel):
     telemetry: RunTelemetry | None = None
 
 
-Architecture = Literal["single", "staged"]
+Architecture = Literal["single", "staged", "workflow"]
 
 # Suggested approval names for consistency in evaluation:
 # Manager, Department Head, Procurement, Finance, CFO, Security, Privacy, Legal
