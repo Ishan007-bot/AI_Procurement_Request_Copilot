@@ -104,18 +104,19 @@ Starter-pack defects found and fixed (11, each with a test): **[docs/starter_fix
 
 ### Final run: one model, all architectures
 
-`gemini-3.5-flash-lite` for every architecture, 16 core cases, temperature 0. Full table: **[evals/results/summary_trials.md](evals/results/summary_trials.md)**.
+`gemini-3.5-flash-lite` for every architecture, 16 core cases, 3 trials, temperature 0. Full table: **[evals/results/summary_trials.md](evals/results/summary_trials.md)**.
 
 | Metric | Rules only | Workflow + 1 LLM | A · single agent | B · staged |
 |---|---:|---:|---:|---:|
-| Cases passing all four quality checks | 15/16 | **15/16** | 14/16 | 14/16 |
-| Injection + fault cases all pass | yes | yes | yes | yes |
+| Mean cases passing all four checks (of 16) | 15 | **15.67** | 13.67 | 14.33 |
+| Same decision in every trial | - | 15/16 | 16/16 | 13/16 |
+| Injection + fault cases pass in every trial | yes | yes | yes | yes |
 | Evidence grounded in tool output | all | all | all | all |
-| LLM calls per request | 0 | **1.0** | 2.0 | 3.1 |
-| Tokens per request | 0 | **2.6k** | 5.8k | 8.3k |
-| Median active latency | < 0.1 s | **2.8 s** | 5.1 s | 6.2 s |
+| LLM calls per request | 0 | **1.0** | 2.1 | 3.1 |
+| Tokens per request | 0 | **2.6k** | 6.0k | 8.1k |
+| Median active latency | < 0.1 s | **2.9 s** | 4.9 s | 6.9 s |
 
-The figures are for trial 1. Trials 2–3 are appended to `runs.jsonl` as they complete, and `python evals/report_trials.py` regenerates the table.
+Figures are means over 3 trials (144 runs, no fallbacks). `python evals/report_trials.py` regenerates the table from `runs.jsonl`.
 
 ### Run 1: two Groq models, paired by case
 
@@ -147,7 +148,7 @@ Method, cases and scoring: **[docs/evaluation.md](docs/evaluation.md)**. Full re
 
 ## Architecture decision
 
-**Ship workflow + 1 LLM call.** In every run the agents called the same evidence tools, so code now does the gathering, and one model call makes the judgement (existing-tool overlap, rationale, next step). On one model it scored 15/16 (A and B 14/16), passed every safety case, and used 1 LLM call vs 2.0 (A) and 3.1 (B). **Between A and B, A wins:** quality is a tie (13/16 each in run 1, 14/16 each in the final run). B costs +22% input tokens, 2× output tokens, +56% median latency and one more LLM call per run, and adds a second prompt and hand-off schema to maintain. The properties that matter most (no missed approvals, grounded evidence, conservative handling of unavailable or conflicting data, injection resistance) come from deterministic code that both share, not from the orchestration. Memo (≤ 500 words): **[ARCHITECTURE_DECISION.md](ARCHITECTURE_DECISION.md)**.
+**Ship workflow + 1 LLM call.** In every run the agents called the same evidence tools, so code now does the gathering, and one model call makes the judgement (existing-tool overlap, rationale, next step). On one model it averaged 15.67/16 (A 13.67, B 14.33), passed every safety case in every trial, and used 1 LLM call vs 2.1 (A) and 3.1 (B). **Between A and B, A wins:** quality is a tie (13/16 each in run 1; 13.67 vs 14.33 in the final run, where B was less consistent). B costs +22% input tokens, 2× output tokens, +56% median latency and one more LLM call per run, and adds a second prompt and hand-off schema to maintain. The properties that matter most (no missed approvals, grounded evidence, conservative handling of unavailable or conflicting data, injection resistance) come from deterministic code that both share, not from the orchestration. Memo (≤ 500 words): **[ARCHITECTURE_DECISION.md](ARCHITECTURE_DECISION.md)**.
 
 ## Known limitations
 
