@@ -1,0 +1,14 @@
+[theme]
+base = "light"
+primaryColor = "#2563EB"
+backgroundColor = "#F6F7FB"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F172A"
+font = "sans serif"
+
+[server]
+# Skips Streamlit's first-run email prompt, which blocks on a fresh machine.
+headless = true
+
+[browser]
+gatherUsageStats = false

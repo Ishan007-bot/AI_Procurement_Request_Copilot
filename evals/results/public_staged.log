@@ -1,0 +1,4 @@
+Public cases, starter checks - architecture=staged (vendor API http://127.0.0.1:8001)
+PASS  PUB-01  llm=3  active=21.1s  model groq:qwen/qwen3.8-27b
+PASS  PUB-02  llm=3  active=19.8s  model groq:qwen/qwen3.8-27b
+PASS  PUB-03  llm=3  active=11.5s  model groq:qwen/qwen3.8-27b

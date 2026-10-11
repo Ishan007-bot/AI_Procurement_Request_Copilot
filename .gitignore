@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+.pytest_cache/
+# Scratch output from the starter's public runner; curated results live in evals/results/
+evals/results_*.csv
+# Local human decision log written by the UI
+logs/

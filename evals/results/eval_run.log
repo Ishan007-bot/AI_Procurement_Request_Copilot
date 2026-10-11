@@ -1,0 +1,48 @@
+Models groq:openai/gpt-oss-20b, groq:qwen/qwen3.8-27b · suite core · 28 run(s) to do
+Estimated input tokens: ~308,000 (free tier: ~8k tokens/min, daily cap applies)
+
+PUB-03   single r0 gpt-oss-20b  ... FAIL label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=6 tok=7788 active=6.7s wall=32s overrides=0
+         - label Use existing tool / confirm need not in ['Route for specialist review']
+PUB-03   staged r0 gpt-oss-20b  ... PASS label=Route for specialist review raw=Route for specialist review llm=7 tok=9531 active=7.9s wall=100s overrides=0
+PUB-04   single r0 qwen3.8-27b  ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=2 tok=5682 active=5.3s wall=5s overrides=0
+PUB-04   staged r0 qwen3.8-27b  ... PASS label=Escalate: budget exception raw=Escalate: budget exception llm=3 tok=7765 active=14.3s wall=337s overrides=0
+PUB-05   single r0 gpt-oss-20b  ... PASS label=Request clarification raw=Request clarification llm=6 tok=10997 active=4.8s wall=32s overrides=3
+PUB-05   staged r0 gpt-oss-20b  ... PASS label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=7 tok=11688 active=667.3s wall=708s overrides=2
+PUB-06   single r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=2 tok=5678 active=8.9s wall=9s overrides=1
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+PUB-06   staged r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=3 tok=7673 active=17.1s wall=202s overrides=1
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+DS-1004  single r0 gpt-oss-20b  ... PASS label=Route for specialist review raw=Proceed to approval routing llm=6 tok=11140 active=4.1s wall=9s overrides=1
+DS-1004  staged r0 gpt-oss-20b  ... FAIL label=Request clarification raw=Route for specialist review llm=7 tok=9940 active=7.3s wall=87s overrides=4
+         - label Request clarification not in ['Route for specialist review']
+DS-1007  single r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=2 tok=6043 active=8.7s wall=133s overrides=2
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+DS-1007  staged r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=3 tok=8185 active=14.5s wall=237s overrides=2
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+DS-1008  single r0 gpt-oss-20b  ... PASS label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=6 tok=7654 active=4.6s wall=22s overrides=0
+DS-1008  staged r0 gpt-oss-20b  ... PASS label=Use existing tool / confirm need raw=Use existing tool / confirm need llm=7 tok=10871 active=7.6s wall=68s overrides=4
+DS-1010  single r0 qwen3.8-27b  ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5518 active=37.4s wall=145s overrides=0
+DS-1010  staged r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Request clarification llm=3 tok=7416 active=12.1s wall=175s overrides=2
+         - label Request clarification not in ['Proceed to approval routing']
+         - too many missing-info items (1)
+EDGE-01  single r0 gpt-oss-20b  ... PASS label=Route for specialist review raw=Proceed to approval routing llm=6 tok=9679 active=4.2s wall=24s overrides=1
+EDGE-01  staged r0 gpt-oss-20b  ... PASS label=Route for specialist review raw=Proceed to approval routing llm=7 tok=10276 active=6.0s wall=70s overrides=1
+EDGE-05  single r0 qwen3.8-27b  ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=2 tok=5576 active=6.7s wall=163s overrides=0
+EDGE-05  staged r0 qwen3.8-27b  ... PASS label=Proceed to approval routing raw=Proceed to approval routing llm=3 tok=7137 active=10.7s wall=141s overrides=0
+EDGE-06  single r0 gpt-oss-20b  ... PASS label=Manual review: evidence unavailable or conflicting raw=Route for specialist review llm=6 tok=9413 active=4.8s wall=5s overrides=1
+EDGE-06  staged r0 gpt-oss-20b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=7 tok=9899 active=8.2s wall=61s overrides=1
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+EDGE-08  single r0 qwen3.8-27b  ... PASS label=Route for specialist review raw=Route for specialist review llm=2 tok=5478 active=8.3s wall=272s overrides=0
+EDGE-08  staged r0 qwen3.8-27b  ... PASS label=Route for specialist review raw=Route for specialist review llm=3 tok=7258 active=10.1s wall=98s overrides=0
+EDGE-11  single r0 gpt-oss-20b  ... FAIL label=Route for specialist review raw=Route for specialist review llm=6 tok=5525 active=5.2s wall=22s overrides=0
+         - label Route for specialist review not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Route for specialist review)
+EDGE-11  staged r0 gpt-oss-20b  ... FAIL label=Proceed to approval routing raw=Proceed to approval routing llm=7 tok=10857 active=7.0s wall=76s overrides=0
+         - label Proceed to approval routing not in ['Use existing tool / confirm need']
+         - less restrictive than gold (Proceed to approval routing)
+EDGE-13  single r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=2 tok=5313 active=7.7s wall=200s overrides=1
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+EDGE-13  staged r0 qwen3.8-27b  ... FAIL label=Request clarification raw=Manual review: evidence unavailable or conflicting llm=3 tok=7074 active=11.0s wall=59s overrides=1
+         - label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+
+Reports: evals\results\summary.md, comparison.csv, results_single.csv, results_staged.csv

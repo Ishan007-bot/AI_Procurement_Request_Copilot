@@ -1,0 +1,17 @@
+case_id,architecture,correct_next_action,grounded_evidence,policy_followed,human_escalation_correct,latency_ms,llm_calls,tool_calls,notes
+PUB-01,staged,True,True,True,True,8623.3,7,6,
+PUB-02,staged,False,True,True,True,16009.1,3,6,label Request clarification not in ['Route for specialist review']
+PUB-03,staged,True,True,True,True,7862.6,7,6,
+PUB-04,staged,True,True,True,True,14284.6,3,6,
+PUB-05,staged,True,True,True,True,667273.0,7,6,
+PUB-06,staged,False,True,True,True,17133.8,3,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+DS-1004,staged,False,True,True,True,7261.2,7,6,label Request clarification not in ['Route for specialist review']
+DS-1007,staged,False,True,True,True,14459.4,3,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+DS-1008,staged,True,True,True,True,7569.3,7,6,
+DS-1010,staged,False,True,False,True,12067.5,3,6,label Request clarification not in ['Proceed to approval routing']; too many missing-info items (1); raw draft: too many missing-info items (3)
+EDGE-01,staged,True,True,True,True,6035.2,7,6,
+EDGE-05,staged,True,True,True,True,10693.7,3,6,
+EDGE-06,staged,False,True,True,True,8152.7,7,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
+EDGE-08,staged,True,True,True,True,10131.1,3,6,
+EDGE-11,staged,False,True,True,False,6983.1,7,6,label Proceed to approval routing not in ['Use existing tool / confirm need']; less restrictive than gold (Proceed to approval routing)
+EDGE-13,staged,False,True,True,True,10994.8,3,6,label Request clarification not in ['Manual review: evidence unavailable or conflicting']
